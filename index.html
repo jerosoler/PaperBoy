@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+ <head>
+<script type="text/javascript" src='jquery-1.8.2.js'></script>
+<script type="text/javascript" src='jquery.mousewheel.min.js'></script>
+<script type="text/javascript" src='three.js'></script>
+<!-- <script type="text/javascript" src='stats.js'></script> -->
+<link rel="stylesheet" media="screen" type="text/css" href="css/colorpicker.css" />
+<script type="text/javascript" src="js/colorpicker.js"></script>
+ <style type="text/css">
+@font-face {
+font-family: Moonshiner;
+src: url(fonts/Moonshiner-Round.otf) format("opentype");
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    
+}
+::-webkit-scrollbar-thumb   {
+background: rgba(0,0,0,0.5);
+border-radius: 2px;
+}
+
+ body{
+ font-family: 'Moonshiner', 'Tahoma';
+ font-size: 20px;
+ margin: 0;
+ padding: 0px;
+ }
+ #escenario{
+ background: #FFF;
+ height: 100%;
+ position: fixed;
+ top:0px;
+ left: 0px;
+ width: 100%;
+cursor:move;
+ }
+
+#menu{ 
+ background: #bababa;
+ position: fixed;
+ top: 0;
+ right: 0px;
+ width: 260px; 
+ height: 100%;
+ border-left: 2px #888888 solid; 
+ overflow-y: auto;
+}
+
+#impresion{
+position:absolute;
+display:none;
+top: 0px;
+left: 0px;
+ background: #ffffff;
+ width: 100%;
+height: 100%;
+ z-index: 10;
+}
+#closeimpresion {
+position:absolute;
+bottom: 15px;
+right: 89px;
+width: 64px;
+height: 64px;
+background: url('paper/back.png') center no-repeat;
+}
+#closeimpresion:hover{
+border-radius: 4px;
+background: url('paper/back.png') center no-repeat rgba(0,0,0,0.5);
+cursor:pointer;
+}
+
+#imprimir { 
+position:absolute;
+bottom: 15px;
+right: 15px;
+width: 64px;
+height: 64px;
+background: url('paper/printer.png') center no-repeat;
+}
+
+#imprimir:hover { 
+border-radius: 4px;
+background: url('paper/printer.png') center no-repeat rgba(0,0,0,0.5);
+cursor:pointer;
+}
+
+
+
+
+#video {
+position:relative;
+margin-left: 50px;
+right: 0px;
+width: 160px;
+height: 120px;
+bottom: 0px;
+z-index: 100;
+background: black;
+border-radius: 8px;
+border: 2px #ffffff solid;
+}
+
+#cuadro {
+position:absolute;
+margin-left: 107.5px;
+margin-top: 37.5px;
+width: 45px;
+height: 45px;
+border: 2px;
+border-color: red;
+border-style: solid;
+z-index: 100000;
+border-radius: 4px;
+}
+
+.colorclassinput { 
+width: 40px;
+height: 20px;
+background: red;
+border: 2px;
+border-color: white;
+border-style:solid;
+color: red;
+margin-left: 10px;
+}
+
+.colorclassinput:hover {
+cursor: pointer;
+}
+
+h1 { 
+margin: 0px;
+color: white;
+font-weight: bold;
+font-size: 52px;
+margin-left: 5px;
+margin-top: 0px;
+padding: 0px;
+letter-spacing: 2px;
+text-shadow: 2px 2px 5px #888888;
+        filter: dropshadow(color=#888888, offx=1, offy=1);
+}
+hr {
+color: #888888;
+background-color: #888888;
+height: 2px;
+border: 0px;
+width: 80%;
+}
+
+span {
+color: #888888;
+margin-left: 5px;
+line-height: 20px;
+vertical-align:middle;
+letter-spacing: 1px;
+}
+
+
+
+.button { 
+margin-left: 28px;
+margin-top: 5px;
+width: 200px;
+height: 30px;
+border: 2px solid #000000;
+border-radius: 4px;
+background: #888888;
+font-family: 'Moonshiner', 'Tahoma';
+letter-spacing: 2px;
+font-size: 28px;
+line-height:24px;
+vertical-align: middle;
+text-align: center;
+
+transition-property:background;
+transition-duration:1s;
+transition-timing-function:ease-in;
+
+-moz-transition-property:background;
+-moz-transition-duration:1s;
+-moz-transition-timing-function:ease-in;
+
+/* Opera */
+-o-transition-property:background;
+-o-transition-duration:1s;
+-o-transition-timing-function:ease-in;
+
+
+-webkit-transition-property:background;
+-webkit-transition-duration:1s;
+-webkit-transition-timing-function:ease-in;
+}
+
+.button:hover {
+cursor: pointer;
+background: #ffffff;
+}
+
+#menudrop, #menudrop ul, #menudrop ul li,
+#menudrop ul li ul, #menudrop ul li ul li {
+margin:0;
+padding:0;
+
+}
+#menudrop{
+position: absolute;
+list-style:none;
+font-family: 'Moonshiner', 'Tahoma';
+letter-spacing: 2px;
+font-size: 18px;
+line-height: 18px;
+margin-top:5px;
+height: 40px;
+width:40px;
+top: 84px;
+left: 130px;
+background: #888888;
+z-index: 10000;
+border: 2px;
+border-style: solid; 
+border-color: white;
+vertical-align: middle;
+text-align: center;
+border-radius: 4px, 4px, 0px, 0px;
+z-index: 30000;
+/* Forzar superposición del menú 
+position:relative;
+z-index:5;
+Quitar el comentario si se necesita
+*/
+}
+
+#menudrop ul{
+position:absolute;
+left: -9999px;
+list-style:none;
+
+}
+
+#menudrop li:hover ul{
+left: -2px;
+}
+#menudrop ul li {
+text-align: center;
+height: 40px;
+width: 40px;
+background: rgba(136,136,136,0.7);
+
+}
+
+#menudrop li ul li {
+border: 2px;
+border-left-style: solid;
+border-right-style: solid;
+border-top-style:dashed;
+border-color: #ffffff;
+}
+
+#menudrop li ul li:hover {
+cursor:pointer;
+}
+
+.share {
+position:relative;
+top: 5px;
+margin-left: 20px;
+
+
+}
+
+
+ </style>
+<style type="text/css" media="print">
+   .no-print { display: none; }
+</style>
+<title>BoyPaper | Jero Soler</title>
+ <meta name="description" content="Create yout Paper Boy, with 3D and Print">
+ <meta name="keywords" content="paperboy, three.js, 3d, origami, papiroflexia"> 
+ <meta name="author" content="Jero Soler">
+    <meta charset="UTF-8">
+    <link rel="author" href="https://plus.google.com/115421796929734213540/"/>
+ </head>
+ <body>
+<canvas id="photo" width="180px" height="180px" display="none"></canvas>
+ <div id="impresion"><canvas id="canvas"></canvas><div class="no-print" id="closeimpresion"></div><div class="no-print" id="imprimir"></div></div>
+ <div id="escenario"></div>
+ <div id="menu">
+<h1>Step 1</h1>
+<hr>
+ <input type="text" name="color" id="colorSelectorPelo" class="colorclassinput" value="000000" maxlength="6" size="6"><span>Hair</span></br>
+ <input type="text" name="color" id="colorSelector" class="colorclassinput" value="ff0000" maxlength="6" size="6"><span>T-Shirt</span></br>
+<input type="text" name="color" id="colorSelectorlegs" class="colorclassinput" value="6688aa" maxlength="6" size="6"><span>Jeans</span></br>
+ <ul id="menudrop">
+ <li><img id="imagen" src="timthumb.php?src=/paper/none.png&w=40&h=40" width="40" height="40">
+  <ul>
+    <li name="none"><img src="timthumb.php?src=/paper/none.png&w=40&h=40" width="40" height="40"></li>
+    <li name="corazon"> <img src="timthumb.php?src=/paper/corazon.png&w=40&h=40" width="40" height="40"></li>
+    <li name="calavera"> <img src="timthumb.php?src=/paper/calavera.png&w=40&h=40" width="40" height="40"></li>
+  </ul>
+  </li>
+  </ul>
+
+<h1>Step 2</h1>
+<hr>
+<div id="cuadro"></div>
+<video id="video" autoplay width="160px" height="120px"><source src="" type="video/webm"></video>
+<div id="button" class="button">CAM</div>
+<div id="foto" class="button">PHOTO</div>
+<h1>Step 3</h1>
+<hr>
+<div id="print" class="button">PRINT</div>
+<h1>Share</h1>
+<hr>
+<img class="share" src="paper/twitter_com.png" width="20" heigh="20"><span>#boypaper</span>
+<h1>About</h1>
+<hr>
+<p style="margin-left:20px;color:#888888">Developed By <a href="https://twitter.com/jerosoler" target="blank">Jero Soler</a> with THREE.JS, WebRTC AND Canvas. </br>
+</br>
+ </div>
+
+ 
+<script type="text/javascript">
+$("li ul li:last-child").css({"-webkit-border-radius":" 0px 0px 4px 4px", "border-radius":" 0px 0px 4px 4px", "border-bottom-style":"solid"});
+$("li ul li:first-child").css({"border-top-style":"none"});
+
+$("#menudrop li ul li").click(function(){
+ var texto = $(this).attr("name");
+dibus.material.map =  THREE.ImageUtils.loadTexture('paper/'+ texto +'.png');
+$("#imagen").attr("src", "timthumb.php?src=/paper/"+texto+".png&w=40&h=40");
+});
+
+var image = new Image();
+    image.src = "paper/toy.png";
+
+var canvas = document.getElementById('canvas');
+
+image.onload = function () { 
+var anchocanvas = image.width / window.innerWidth; 
+var altocanvas = image.height / window.innerHeight;
+
+/*
+if(anchocanvas < altocanvas) { 
+canvas.width = window.innerWidth;
+canvas.height = image.height / anchocanvas;
+} else {  
+canvas.width = image.width / altocanvas;
+canvas.height = window.innerHeight;
+} */
+
+if(anchocanvas > altocanvas) { 
+canvas.width = window.innerWidth;
+canvas.height = image.height / anchocanvas;
+} else {  
+canvas.width = image.width / altocanvas;
+canvas.height = window.innerHeight;
+}
+
+}
+
+/*
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight-5;
+
+*/
+
+
+
+var mouse = { x: 0, y: 0 }, INTERSECTED;
+var projector, ray, mouse3D, isMouseDown = false, onMouseDownPosition, radious = 260, theta = 360, onMouseDownTheta = 45, phi = 60, onMouseDownPhi = 60;
+var texture_tv;
+var texture_canvas;
+
+/*
+var stats = new Stats();
+stats.setMode(0); // 0: fps, 1: ms
+
+// Align top-left
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+
+document.body.appendChild( stats.domElement ); */
+
+var collidableMeshList = [];
+			var ancho = $('#escenario').width() -260, 
+			    alto  = $('#escenario').height()-5;
+
+			var angulo = 60,
+				ratio  = ancho / alto,
+				cerca  = 0.1,
+				lejos  = 10000;
+
+			var escenario = $('#escenario');
+
+			var miRender = new THREE.WebGLRenderer();
+
+			var miCamara = new THREE.PerspectiveCamera(angulo, ratio, cerca, lejos);
+
+			var miEscena = new THREE.Scene();
+			
+			miRender.shadowMapEnabled = true;
+
+			miCamara.position.x = radious * Math.sin( theta * Math.PI / 360 )
+                            * Math.cos( phi * Math.PI / 360 );
+        miCamara.position.y = radious * Math.sin( phi * Math.PI / 360 );
+        miCamara.position.z = radious * Math.cos( theta * Math.PI / 360 )
+                            * Math.cos( phi * Math.PI / 360 );
+        miCamara.updateMatrix();
+
+			miRender.setSize(ancho, alto);
+
+			escenario.append(miRender.domElement);
+
+			var materialpelo = new THREE.MeshLambertMaterial({color: 0x000000});
+			var materialbody = new THREE.MeshLambertMaterial({color: 0xff0000});
+			var materiallegs2 = new THREE.MeshLambertMaterial({color: 0x6688aa});
+			
+
+			/* SUELO */
+
+		
+			/* CUBO */
+var materialsbody = [];
+ materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body44.png') } ) );
+   materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body22.png') } ) );
+   materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
+   materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body6.png') } ) );
+   materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body33.png') } ) );
+   materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body11.png') } ) );
+			
+			var body = new THREE.Mesh(new THREE.CubeGeometry(55, 55, 55), new THREE.MeshFaceMaterial( materialsbody ));
+		        body.position.x = 0;
+			body.position.y = 70;
+			body.position.z = 0;
+
+
+var body2 = new THREE.Mesh(new THREE.CubeGeometry(54.9, 48, 54.9), materialbody);
+		        body2.position.x = 0;
+			body2.position.y = 73.5;
+			body2.position.z = 0;
+miEscena.add(body2);
+
+var dibus = new THREE.Mesh(new THREE.PlaneGeometry(55,55,1,1), new THREE.MeshLambertMaterial({ transparent: true, map: THREE.ImageUtils.loadTexture('paper/none.png') }) );
+
+dibus.position.x = 0;
+dibus.position.y = 70;
+dibus.position.z = -28;
+dibus.rotation.y = 360 * Math.PI/360;
+miEscena.add(dibus);
+
+var materialshead = [];
+
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head44.png') } ) );
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head22.png') } ) );
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head55.png') } ) );
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head6.png') } ) );
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head33.png') } ) );
+   materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head11.png') } ) );
+  
+			var head = new THREE.Mesh(new THREE.CubeGeometry(90, 60 ,90), new THREE.MeshFaceMaterial( materialshead ));
+		        head.position.x = 0;
+			head.position.y = 130;
+			head.position.z = 0;
+
+var head2 = new THREE.Mesh(new THREE.CubeGeometry(90, 60 ,90), materialpelo);
+		        head2.position.x = 0;
+			head2.position.y = 130;
+			head2.position.z = 0;
+miEscena.add(head2);
+
+
+
+
+
+var materialslegs = [];
+
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/legs4.png') } ) );
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/legs2.png') } ) );
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0x000000 } ) );
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/legs3.png') } ) );
+   materialslegs.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/legs1.png') } ) );
+
+
+			var legs = new THREE.Mesh(new THREE.CubeGeometry(42, 22 ,42), new THREE.MeshFaceMaterial( materialslegs ));
+		        legs.position.x = 0;
+			legs.position.y = 30;
+			legs.position.z = 0;
+
+
+			var legs2 = new THREE.Mesh(new THREE.CubeGeometry(42, 22 ,42), materiallegs2);
+		        legs2.position.x = 0;
+			legs2.position.y = 30;
+			legs2.position.z = 0;
+miEscena.add(legs2);
+
+var legs3 = new THREE.Mesh(new THREE.CubeGeometry(55, 7 ,55), materiallegs2);
+		        legs3.position.x = 0;
+			legs3.position.y = 46;
+			legs3.position.z = 0;
+miEscena.add(legs3);
+
+
+var materialshand1 = [];
+
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand22.png') } ) );
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand44.png') } ) );
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand55.png') } ) );
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand6.png') } ) );
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand33.png') } ) );
+   materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand11.png') } ) );
+
+  
+			var hand1 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22), new THREE.MeshFaceMaterial( materialshand1 ));
+		        hand1.position.x = 40;
+			hand1.position.y = 75;
+			hand1.position.z = 0;
+
+			var hand11 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22), materialbody);
+		        hand11.position.x = 40;
+			hand11.position.y = 75;
+			hand11.position.z = 0;
+
+			miEscena.add(hand11);
+			
+var materialshand2 = [];
+
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand44.png') } ) );
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand22.png') } ) );
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand55.png') } ) );
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand6.png') } ) );
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand33.png') } ) );
+   materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand11.png') } ) );
+
+			
+			var hand2 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22),  new THREE.MeshFaceMaterial( materialshand2 ));
+		        hand2.position.x = -40;
+			hand2.position.y = 75;
+			hand2.position.z = 0;
+
+			var hand22 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22), materialbody);
+		        hand22.position.x = -40;
+			hand22.position.y = 75;
+			hand22.position.z = 0;
+
+			miEscena.add(hand22);
+			
+			miEscena.add(head);
+		  	miEscena.add(body);
+			miEscena.add(legs);
+			miEscena.add(hand1);
+			miEscena.add(hand2);
+			
+
+			/* LUZ */
+
+			var luz = new THREE.SpotLight(0xFFFFFF);
+
+			luz.position.x = 0;
+			luz.position.y = 200;
+			luz.position.z = 200;
+			
+			
+
+
+			
+			miEscena.add(luz);
+	
+			miEscena.add(miCamara);
+			render();
+			
+
+
+
+			
+
+$(window).resize(function() {
+ ancho = $('#escenario').width()-260;
+ alto  = $('#escenario').height()-5;
+    miRender.setSize(ancho, alto);
+
+var anchocanvas = image.width / window.innerWidth; 
+var altocanvas = image.height / window.innerHeight;
+
+/*
+if(anchocanvas < altocanvas) { 
+canvas.width = window.innerWidth;
+canvas.height = image.height / anchocanvas;
+} else {  
+canvas.width = image.width / altocanvas;
+canvas.height = window.innerHeight;
+} */
+
+if(anchocanvas > altocanvas) { 
+canvas.width = window.innerWidth;
+canvas.height = image.height / anchocanvas;
+} else {  
+canvas.width = image.width / altocanvas;
+canvas.height = window.innerHeight;
+}
+});
+
+$('#escenario').mousemove(onDocumentMouseMove);
+$('#escenario').mousedown(onDocumentMouseDown);
+$('#escenario').mouseup(onDocumentMouseUp);
+$('#escenario').bind('mousewheel', onDocumentMouseWheel);
+
+onMouseDownPosition = new THREE.Vector2();
+projector = new THREE.Projector();
+ray = new THREE.Ray( miCamara.position, null );
+
+
+function onDocumentMouseDown( event ) {
+
+				event.preventDefault();
+
+				isMouseDown = true;
+				onMouseDownTheta = theta;
+				onMouseDownPhi = phi;
+				onMouseDownPosition.x = event.clientX;
+				onMouseDownPosition.y = event.clientY;
+						
+	
+render();
+			}
+
+function onDocumentMouseMove( event ) {
+mouse.x = ( (event.clientX) / miRender.domElement.width ) * 2 - 1;
+mouse.y = - ( (event.clientY-50) / miRender.domElement.height ) * 2 + 1;
+
+    if ( isMouseDown ) {
+    
+        theta = - ( ( event.clientX - onMouseDownPosition.x ) * 0.5 )
+                + onMouseDownTheta;
+        phi = ( ( event.clientY - onMouseDownPosition.y ) * 0.5 )
+              + onMouseDownPhi;
+
+        //phi = Math.min( 180, Math.max( 0, phi ) );
+
+        miCamara.position.x = radious * Math.sin( theta * Math.PI / 360 )
+                            * Math.cos( phi * Math.PI / 360 );
+        miCamara.position.y = radious * Math.sin( phi * Math.PI / 360 );
+        miCamara.position.z = radious * Math.cos( theta * Math.PI / 360 )
+                            * Math.cos( phi * Math.PI / 360 );
+        miCamara.updateMatrix();
+
+    }
+
+    mouse3D = projector.unprojectVector(
+        new THREE.Vector3(
+            ( event.clientX / miRender.domElement.width ) * 2 - 1,
+            - ( event.clientY-50 / miRender.domElement.height ) * 2 + 1,
+            0.5
+        ),
+        miCamara
+    );
+    ray.direction = mouse3D.subSelf( miCamara.position ).normalize();
+
+    //interact();
+	
+    render();
+
+}
+
+
+function onDocumentMouseUp( event ) {
+
+				event.preventDefault();
+
+				isMouseDown = false;
+				
+				onMouseDownPosition.x = event.clientX - onMouseDownPosition.x;
+				onMouseDownPosition.y = event.clientY - onMouseDownPosition.y;
+
+render();
+}
+
+function onDocumentMouseWheel( event, delta ) {
+				var dir = delta > 0 ? 'Up' : 'Down';
+				if(dir=='Up') { radious -= 120; } else { radious += 120; }
+				//radious -= event.wheelDeltaY;
+
+				miCamara.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+				miCamara.position.y = radious * Math.sin( phi * Math.PI / 360 );
+				miCamara.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+				miCamara.updateMatrix();
+				
+				//interact();
+				render();
+
+			}
+
+
+
+$('#colorSelectorPelo').ColorPicker({
+	color: '#000000',
+	onChange: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+		$(el).css('backgroundColor', '#' + hex);
+		head2.material.color.setHex('0x'+hex);
+		$('#colorSelectorPelo').css('backgroundColor','#'+hex);
+		$('#colorSelectorPelo').css('color','#'+hex);
+		$('#colorSelectorPelo').attr('value', hex)
+		//INTERSECTED.material.color.setHex(parseInt('0x'+hex));
+	render();
+	}
+});
+
+$('#colorSelectorlegs').ColorPicker({
+	color: '#6688aa',
+	onChange: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+		$(el).css('backgroundColor', '#' + hex);
+		legs2.material.color.setHex('0x'+hex);
+		$('#colorSelectorlegs').css('backgroundColor','#'+hex);
+		$('#colorSelectorlegs').css('color','#'+hex);
+		$('#colorSelectorlegs').attr('value', hex)
+		//INTERSECTED.material.color.setHex(parseInt('0x'+hex));
+	render();
+	}
+});
+
+$('#colorSelector').ColorPicker({
+	color: '#ff0000',
+	onChange: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+		$(el).css('backgroundColor', '#' + hex);
+		body2.material.color.setHex('0x'+hex);
+		$('#colorSelector').css('backgroundColor','#'+hex);
+		$('#colorSelector').css('color','#'+hex);
+		$('#colorSelector').attr('value', hex)
+		//INTERSECTED.material.color.setHex(parseInt('0x'+hex));
+	render();
+	}
+});
+
+var valpelo = $('#colorSelectorPelo').val();
+$('#colorSelectorPelo').css('backgroundColor','#'+valpelo);
+$('#colorSelectorPelo').css('color','#'+valpelo);
+
+var vallegs = $('#colorSelectorlegs').val();
+$('#colorSelectorlegs').css('backgroundColor','#'+vallegs);
+$('#colorSelectorlegs').css('color','#'+vallegs);
+
+var valbody = $('#colorSelector').val();
+$('#colorSelector').css('backgroundColor','#'+valbody);
+$('#colorSelector').css('color','#'+valbody);
+
+ 
+$('#button').click(function(){
+
+/*$('body').append('<video id="video" autoplay loop style="display:none" width="1000" height="600" muted><source src="video/revestimientos.mp4" type="video/mp4"><source src="video/revestimientos.webm" type="video/webm"></video>');*/
+
+window.URL = window.URL || window.webkitURL;
+	navigator.getUserMedia = navigator.getUserMedia ||
+	                         navigator.webkitGetUserMedia ||
+	                         navigator.mozGetUserMedia;
+	 
+	navigator.getUserMedia({video: true}, function(stream) {
+	document.querySelector('video').src = window.URL.createObjectURL(stream);
+	}); 
+
+/*
+$('#video source').attr('src', 'ame/video/revestimientos.webm');
+$('#video').load();
+$('#video').get(0).play();
+$('#video').prop('muted', true);
+*/
+var video = document.getElementById( 'video' );
+
+
+				texture_tv = new THREE.Texture( video );
+				texture_tv.minFilter = THREE.LinearFilter;
+				texture_tv.magFilter = THREE.LinearFilter;
+				texture_tv.format = THREE.RGBFormat;
+				texture_tv.generateMipmaps = false;
+
+/*texture_tv.wrapS = texture_tv.wrapT = THREE.RepeatWrapping;
+texture_tv.repeat.set( 0.5, 0.5 );
+texture_tv.offset.x = 0;
+texture_tv.offset.y = 0; */
+
+materialshead[5] = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: texture_tv });
+
+render();
+});
+
+
+function render() {
+
+				//encima();
+				luz.position.x = miCamara.position.x;
+				luz.position.y = miCamara.position.y +100;
+				luz.position.z = miCamara.position.z -100;
+				
+				miCamara.lookAt(new THREE.Vector3( 0, 80, 0 ));
+				miRender.render(miEscena, miCamara);
+				/*stats.begin();
+				stats.end();*/
+			
+			if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
+
+					if ( texture_tv ) texture_tv.needsUpdate = true;
+				  
+				}
+			if ( texture_canvas ) texture_canvas.needsUpdate = true;
+}
+setInterval(function(){ render()},30);
+
+
+
+$('#foto').click(function(){
+var c = document.getElementById('photo');
+var v = document.getElementById('video');
+c.getContext('2d').drawImage(v, 230, 150, 180, 180, 0,0, 180, 180);
+texture_canvas = new THREE.Texture( c );
+
+materialshead[5] = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: texture_canvas });
+
+
+});
+
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+$('#print').click(function(){
+$('#impresion').css({"display":"block"});
+
+var cara = document.getElementById('photo');
+var colorbody = $('#colorSelector').val();
+var bodyred = hexToRgb('#'+ colorbody).r;
+var bodygreen = hexToRgb('#'+ colorbody).g;
+var bodyblue = hexToRgb('#'+ colorbody).b;
+
+var colorhead = $('#colorSelectorPelo').val();
+var headred = hexToRgb('#'+ colorhead).r;
+var headgreen = hexToRgb('#'+ colorhead).g;
+var headblue = hexToRgb('#'+ colorhead).b;
+
+
+var colorlegs = $('#colorSelectorlegs').val();
+var legsred = hexToRgb('#'+ colorlegs).r;
+var legsgreen = hexToRgb('#'+ colorlegs).g;
+var legsblue = hexToRgb('#'+ colorlegs).b;
+
+
+var dibujo = new Image();
+    dibujo.src = $("#imagen").attr("src");
+
+var canvas = document.getElementById('canvas');
+
+    canvas.getContext("2d").drawImage(image,0,0,canvas.width, canvas.height);
+
+
+var imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);  
+    var pixels = imageData.data;  
+    var numPixels = imageData.width * imageData.height
+
+for (var i = 0; i < numPixels*4; i +=4) {  
+    if(pixels[i+0] == 24 && pixels[i+1] == 69 && pixels[i+2] == 110) {
+    pixels[i+0] = bodyred;
+    pixels[i+1] = bodygreen;
+    pixels[i+2] = bodyblue;
+    }
+    /*if(pixels[i+0] == 24) { pixels[i+0] = bodyred; }  // Red  
+    if(pixels[i+1] == 69) { pixels[i+1] = bodygreen; } // Green  
+    if(pixels[i+2] == 110) { pixels[i+2] = bodyblue; } // Blue  */
+};
+
+for (var i = 0; i < numPixels*4; i +=4) {  
+    if(pixels[i+0] == 27 && pixels[i+1] == 27 && pixels[i+2] == 27) {
+    pixels[i+0] = headred;
+    pixels[i+1] = headgreen;
+    pixels[i+2] = headblue;
+    }
+   
+}; 
+
+for (var i = 0; i < numPixels*4; i +=4) {  
+    if(pixels[i+0] == 102 && pixels[i+1] == 136 && pixels[i+2] == 170) {
+    pixels[i+0] = legsred;
+    pixels[i+1] = legsgreen;
+    pixels[i+2] = legsblue;
+    }
+   
+}; 
+
+
+canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);  
+canvas.getContext("2d").putImageData(imageData, 0, 0); 
+
+canvas.getContext("2d").drawImage(dibujo, (canvas.width/100)*33.5, (canvas.height/100)*7.5,  (canvas.width/100)*10.7, (canvas.height/100)*16);
+canvas.getContext("2d").drawImage(cara, (canvas.width/100)*74.61, (canvas.height/100)*52.74,  (canvas.width/100)*16.875 ,(canvas.height/100)*17.23745);
+
+
+});
+
+
+
+$('#closeimpresion').click(function(){
+$('#impresion').css({"display":"none"});
+});
+
+$('#imprimir').click(function(){
+window.print();
+});
+</script>
+ </body>
+</html>
