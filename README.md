@@ -1,5 +1,6 @@
 # PaperBoy
-Imprime tu muñeco paperBoy
+
+Print your PaperBoy 👨🏻printer
 
 [PLAY](https://jerosoler.github.io/PaperBoy/)
 
