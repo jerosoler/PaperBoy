@@ -15,7 +15,7 @@ src: url(fonts/Moonshiner-Round.otf) format("opentype");
 
 ::-webkit-scrollbar {
     width: 10px;
-    
+
 }
 ::-webkit-scrollbar-thumb   {
 background: rgba(0,0,0,0.5);
@@ -38,14 +38,14 @@ border-radius: 2px;
 cursor:move;
  }
 
-#menu{ 
+#menu{
  background: #bababa;
  position: fixed;
  top: 0;
  right: 0px;
- width: 260px; 
+ width: 260px;
  height: 100%;
- border-left: 2px #888888 solid; 
+ border-left: 2px #888888 solid;
  overflow-y: auto;
 }
 
@@ -73,7 +73,7 @@ background: url('paper/back.png') center no-repeat rgba(0,0,0,0.5);
 cursor:pointer;
 }
 
-#imprimir { 
+#imprimir {
 position:absolute;
 bottom: 15px;
 right: 15px;
@@ -82,7 +82,7 @@ height: 64px;
 background: url('paper/printer.png') center no-repeat;
 }
 
-#imprimir:hover { 
+#imprimir:hover {
 border-radius: 4px;
 background: url('paper/printer.png') center no-repeat rgba(0,0,0,0.5);
 cursor:pointer;
@@ -117,7 +117,7 @@ z-index: 100000;
 border-radius: 4px;
 }
 
-.colorclassinput { 
+.colorclassinput {
 width: 40px;
 height: 20px;
 background: red;
@@ -132,7 +132,7 @@ margin-left: 10px;
 cursor: pointer;
 }
 
-h1 { 
+h1 {
 margin: 0px;
 color: white;
 font-weight: bold;
@@ -162,7 +162,7 @@ letter-spacing: 1px;
 
 
 
-.button { 
+.button {
 margin-left: 28px;
 margin-top: 5px;
 width: 200px;
@@ -222,13 +222,13 @@ left: 130px;
 background: #888888;
 z-index: 10000;
 border: 2px;
-border-style: solid; 
+border-style: solid;
 border-color: white;
 vertical-align: middle;
 text-align: center;
 border-radius: 4px, 4px, 0px, 0px;
 z-index: 30000;
-/* Forzar superposición del menú 
+/* Forzar superposición del menú
 position:relative;
 z-index:5;
 Quitar el comentario si se necesita
@@ -280,7 +280,7 @@ margin-left: 20px;
 </style>
 <title>BoyPaper | Jero Soler</title>
  <meta name="description" content="Create yout Paper Boy, with 3D and Print">
- <meta name="keywords" content="paperboy, three.js, 3d, origami, papiroflexia"> 
+ <meta name="keywords" content="paperboy, three.js, 3d, origami, papiroflexia">
  <meta name="author" content="Jero Soler">
     <meta charset="UTF-8">
     <link rel="author" href="https://plus.google.com/115421796929734213540/"/>
@@ -296,11 +296,11 @@ margin-left: 20px;
  <input type="text" name="color" id="colorSelector" class="colorclassinput" value="ff0000" maxlength="6" size="6"><span>T-Shirt</span></br>
 <input type="text" name="color" id="colorSelectorlegs" class="colorclassinput" value="6688aa" maxlength="6" size="6"><span>Jeans</span></br>
  <ul id="menudrop">
- <li><img id="imagen" src="timthumb.php?src=/paper/none.png&w=40&h=40" width="40" height="40">
+ <li><img id="imagen" src="/paper/none.png" width="40" height="40">
   <ul>
-    <li name="none"><img src="timthumb.php?src=/paper/none.png&w=40&h=40" width="40" height="40"></li>
-    <li name="corazon"> <img src="timthumb.php?src=/paper/corazon.png&w=40&h=40" width="40" height="40"></li>
-    <li name="calavera"> <img src="timthumb.php?src=/paper/calavera.png&w=40&h=40" width="40" height="40"></li>
+    <li name="none"><img src="/paper/none.png" width="40" height="40"></li>
+    <li name="corazon"> <img src="/paper/corazon.png" width="40" height="40"></li>
+    <li name="calavera"> <img src="/paper/calavera.png" width="40" height="40"></li>
   </ul>
   </li>
   </ul>
@@ -323,7 +323,7 @@ margin-left: 20px;
 </br>
  </div>
 
- 
+
 <script type="text/javascript">
 $("li ul li:last-child").css({"-webkit-border-radius":" 0px 0px 4px 4px", "border-radius":" 0px 0px 4px 4px", "border-bottom-style":"solid"});
 $("li ul li:first-child").css({"border-top-style":"none"});
@@ -331,7 +331,7 @@ $("li ul li:first-child").css({"border-top-style":"none"});
 $("#menudrop li ul li").click(function(){
  var texto = $(this).attr("name");
 dibus.material.map =  THREE.ImageUtils.loadTexture('paper/'+ texto +'.png');
-$("#imagen").attr("src", "timthumb.php?src=/paper/"+texto+".png&w=40&h=40");
+$("#imagen").attr("src", "/paper/"+texto+".png");
 });
 
 var image = new Image();
@@ -339,23 +339,23 @@ var image = new Image();
 
 var canvas = document.getElementById('canvas');
 
-image.onload = function () { 
-var anchocanvas = image.width / window.innerWidth; 
+image.onload = function () {
+var anchocanvas = image.width / window.innerWidth;
 var altocanvas = image.height / window.innerHeight;
 
 /*
-if(anchocanvas < altocanvas) { 
+if(anchocanvas < altocanvas) {
 canvas.width = window.innerWidth;
 canvas.height = image.height / anchocanvas;
-} else {  
+} else {
 canvas.width = image.width / altocanvas;
 canvas.height = window.innerHeight;
 } */
 
-if(anchocanvas > altocanvas) { 
+if(anchocanvas > altocanvas) {
 canvas.width = window.innerWidth;
 canvas.height = image.height / anchocanvas;
-} else {  
+} else {
 canvas.width = image.width / altocanvas;
 canvas.height = window.innerHeight;
 }
@@ -387,7 +387,7 @@ stats.domElement.style.top = '0px';
 document.body.appendChild( stats.domElement ); */
 
 var collidableMeshList = [];
-			var ancho = $('#escenario').width() -260, 
+			var ancho = $('#escenario').width() -260,
 			    alto  = $('#escenario').height()-5;
 
 			var angulo = 60,
@@ -402,7 +402,7 @@ var collidableMeshList = [];
 			var miCamara = new THREE.PerspectiveCamera(angulo, ratio, cerca, lejos);
 
 			var miEscena = new THREE.Scene();
-			
+
 			miRender.shadowMapEnabled = true;
 
 			miCamara.position.x = radious * Math.sin( theta * Math.PI / 360 )
@@ -419,11 +419,11 @@ var collidableMeshList = [];
 			var materialpelo = new THREE.MeshLambertMaterial({color: 0x000000});
 			var materialbody = new THREE.MeshLambertMaterial({color: 0xff0000});
 			var materiallegs2 = new THREE.MeshLambertMaterial({color: 0x6688aa});
-			
+
 
 			/* SUELO */
 
-		
+
 			/* CUBO */
 var materialsbody = [];
  materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body44.png') } ) );
@@ -432,7 +432,7 @@ var materialsbody = [];
    materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body6.png') } ) );
    materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body33.png') } ) );
    materialsbody.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/body11.png') } ) );
-			
+
 			var body = new THREE.Mesh(new THREE.CubeGeometry(55, 55, 55), new THREE.MeshFaceMaterial( materialsbody ));
 		        body.position.x = 0;
 			body.position.y = 70;
@@ -461,7 +461,7 @@ var materialshead = [];
    materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head6.png') } ) );
    materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head33.png') } ) );
    materialshead.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, map: THREE.ImageUtils.loadTexture('paper/head11.png') } ) );
-  
+
 			var head = new THREE.Mesh(new THREE.CubeGeometry(90, 60 ,90), new THREE.MeshFaceMaterial( materialshead ));
 		        head.position.x = 0;
 			head.position.y = 130;
@@ -515,7 +515,7 @@ var materialshand1 = [];
    materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand33.png') } ) );
    materialshand1.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand11.png') } ) );
 
-  
+
 			var hand1 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22), new THREE.MeshFaceMaterial( materialshand1 ));
 		        hand1.position.x = 40;
 			hand1.position.y = 75;
@@ -527,7 +527,7 @@ var materialshand1 = [];
 			hand11.position.z = 0;
 
 			miEscena.add(hand11);
-			
+
 var materialshand2 = [];
 
    materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand44.png') } ) );
@@ -537,7 +537,7 @@ var materialshand2 = [];
    materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand33.png') } ) );
    materialshand2.push( new THREE.MeshLambertMaterial( { color: 0xffffff, transparent:true, map: THREE.ImageUtils.loadTexture('paper/hand11.png') } ) );
 
-			
+
 			var hand2 = new THREE.Mesh(new THREE.CubeGeometry(22, 40 ,22),  new THREE.MeshFaceMaterial( materialshand2 ));
 		        hand2.position.x = -40;
 			hand2.position.y = 75;
@@ -549,13 +549,13 @@ var materialshand2 = [];
 			hand22.position.z = 0;
 
 			miEscena.add(hand22);
-			
+
 			miEscena.add(head);
 		  	miEscena.add(body);
 			miEscena.add(legs);
 			miEscena.add(hand1);
 			miEscena.add(hand2);
-			
+
 
 			/* LUZ */
 
@@ -564,42 +564,42 @@ var materialshand2 = [];
 			luz.position.x = 0;
 			luz.position.y = 200;
 			luz.position.z = 200;
-			
-			
 
 
-			
+
+
+
 			miEscena.add(luz);
-	
+
 			miEscena.add(miCamara);
 			render();
-			
 
 
 
-			
+
+
 
 $(window).resize(function() {
  ancho = $('#escenario').width()-260;
  alto  = $('#escenario').height()-5;
     miRender.setSize(ancho, alto);
 
-var anchocanvas = image.width / window.innerWidth; 
+var anchocanvas = image.width / window.innerWidth;
 var altocanvas = image.height / window.innerHeight;
 
 /*
-if(anchocanvas < altocanvas) { 
+if(anchocanvas < altocanvas) {
 canvas.width = window.innerWidth;
 canvas.height = image.height / anchocanvas;
-} else {  
+} else {
 canvas.width = image.width / altocanvas;
 canvas.height = window.innerHeight;
 } */
 
-if(anchocanvas > altocanvas) { 
+if(anchocanvas > altocanvas) {
 canvas.width = window.innerWidth;
 canvas.height = image.height / anchocanvas;
-} else {  
+} else {
 canvas.width = image.width / altocanvas;
 canvas.height = window.innerHeight;
 }
@@ -624,8 +624,8 @@ function onDocumentMouseDown( event ) {
 				onMouseDownPhi = phi;
 				onMouseDownPosition.x = event.clientX;
 				onMouseDownPosition.y = event.clientY;
-						
-	
+
+
 render();
 			}
 
@@ -634,7 +634,7 @@ mouse.x = ( (event.clientX) / miRender.domElement.width ) * 2 - 1;
 mouse.y = - ( (event.clientY-50) / miRender.domElement.height ) * 2 + 1;
 
     if ( isMouseDown ) {
-    
+
         theta = - ( ( event.clientX - onMouseDownPosition.x ) * 0.5 )
                 + onMouseDownTheta;
         phi = ( ( event.clientY - onMouseDownPosition.y ) * 0.5 )
@@ -662,7 +662,7 @@ mouse.y = - ( (event.clientY-50) / miRender.domElement.height ) * 2 + 1;
     ray.direction = mouse3D.subSelf( miCamara.position ).normalize();
 
     //interact();
-	
+
     render();
 
 }
@@ -673,7 +673,7 @@ function onDocumentMouseUp( event ) {
 				event.preventDefault();
 
 				isMouseDown = false;
-				
+
 				onMouseDownPosition.x = event.clientX - onMouseDownPosition.x;
 				onMouseDownPosition.y = event.clientY - onMouseDownPosition.y;
 
@@ -689,7 +689,7 @@ function onDocumentMouseWheel( event, delta ) {
 				miCamara.position.y = radious * Math.sin( phi * Math.PI / 360 );
 				miCamara.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 				miCamara.updateMatrix();
-				
+
 				//interact();
 				render();
 
@@ -754,7 +754,7 @@ var valbody = $('#colorSelector').val();
 $('#colorSelector').css('backgroundColor','#'+valbody);
 $('#colorSelector').css('color','#'+valbody);
 
- 
+
 $('#button').click(function(){
 
 /*$('body').append('<video id="video" autoplay loop style="display:none" width="1000" height="600" muted><source src="video/revestimientos.mp4" type="video/mp4"><source src="video/revestimientos.webm" type="video/webm"></video>');*/
@@ -763,10 +763,10 @@ window.URL = window.URL || window.webkitURL;
 	navigator.getUserMedia = navigator.getUserMedia ||
 	                         navigator.webkitGetUserMedia ||
 	                         navigator.mozGetUserMedia;
-	 
+
 	navigator.getUserMedia({video: true}, function(stream) {
 	document.querySelector('video').src = window.URL.createObjectURL(stream);
-	}); 
+	});
 
 /*
 $('#video source').attr('src', 'ame/video/revestimientos.webm');
@@ -800,16 +800,16 @@ function render() {
 				luz.position.x = miCamara.position.x;
 				luz.position.y = miCamara.position.y +100;
 				luz.position.z = miCamara.position.z -100;
-				
+
 				miCamara.lookAt(new THREE.Vector3( 0, 80, 0 ));
 				miRender.render(miEscena, miCamara);
 				/*stats.begin();
 				stats.end();*/
-			
+
 			if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
 
 					if ( texture_tv ) texture_tv.needsUpdate = true;
-				  
+
 				}
 			if ( texture_canvas ) texture_canvas.needsUpdate = true;
 }
@@ -867,42 +867,42 @@ var canvas = document.getElementById('canvas');
     canvas.getContext("2d").drawImage(image,0,0,canvas.width, canvas.height);
 
 
-var imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);  
-    var pixels = imageData.data;  
+var imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+    var pixels = imageData.data;
     var numPixels = imageData.width * imageData.height
 
-for (var i = 0; i < numPixels*4; i +=4) {  
+for (var i = 0; i < numPixels*4; i +=4) {
     if(pixels[i+0] == 24 && pixels[i+1] == 69 && pixels[i+2] == 110) {
     pixels[i+0] = bodyred;
     pixels[i+1] = bodygreen;
     pixels[i+2] = bodyblue;
     }
-    /*if(pixels[i+0] == 24) { pixels[i+0] = bodyred; }  // Red  
-    if(pixels[i+1] == 69) { pixels[i+1] = bodygreen; } // Green  
+    /*if(pixels[i+0] == 24) { pixels[i+0] = bodyred; }  // Red
+    if(pixels[i+1] == 69) { pixels[i+1] = bodygreen; } // Green
     if(pixels[i+2] == 110) { pixels[i+2] = bodyblue; } // Blue  */
 };
 
-for (var i = 0; i < numPixels*4; i +=4) {  
+for (var i = 0; i < numPixels*4; i +=4) {
     if(pixels[i+0] == 27 && pixels[i+1] == 27 && pixels[i+2] == 27) {
     pixels[i+0] = headred;
     pixels[i+1] = headgreen;
     pixels[i+2] = headblue;
     }
-   
-}; 
 
-for (var i = 0; i < numPixels*4; i +=4) {  
+};
+
+for (var i = 0; i < numPixels*4; i +=4) {
     if(pixels[i+0] == 102 && pixels[i+1] == 136 && pixels[i+2] == 170) {
     pixels[i+0] = legsred;
     pixels[i+1] = legsgreen;
     pixels[i+2] = legsblue;
     }
-   
-}; 
+
+};
 
 
-canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);  
-canvas.getContext("2d").putImageData(imageData, 0, 0); 
+canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+canvas.getContext("2d").putImageData(imageData, 0, 0);
 
 canvas.getContext("2d").drawImage(dibujo, (canvas.width/100)*33.5, (canvas.height/100)*7.5,  (canvas.width/100)*10.7, (canvas.height/100)*16);
 canvas.getContext("2d").drawImage(cara, (canvas.width/100)*74.61, (canvas.height/100)*52.74,  (canvas.width/100)*16.875 ,(canvas.height/100)*17.23745);
