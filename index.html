@@ -766,7 +766,9 @@ window.URL = window.URL || window.webkitURL;
 
 	navigator.getUserMedia({video: true}, function(stream) {
 	document.querySelector('video').src = window.URL.createObjectURL(stream);
-	});
+  }, function(err) {
+    console.log("Ocurrió el siguiente error: " + err);
+   });
 
 /*
 $('#video source').attr('src', 'ame/video/revestimientos.webm');
