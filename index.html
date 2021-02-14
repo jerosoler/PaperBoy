@@ -296,11 +296,11 @@ margin-left: 20px;
  <input type="text" name="color" id="colorSelector" class="colorclassinput" value="ff0000" maxlength="6" size="6"><span>T-Shirt</span></br>
 <input type="text" name="color" id="colorSelectorlegs" class="colorclassinput" value="6688aa" maxlength="6" size="6"><span>Jeans</span></br>
  <ul id="menudrop">
- <li><img id="imagen" src="/paper/none.png" width="40" height="40">
+ <li><img id="imagen" src="paper/none.png" width="40" height="40">
   <ul>
-    <li name="none"><img src="/paper/none.png" width="40" height="40"></li>
-    <li name="corazon"> <img src="/paper/corazon.png" width="40" height="40"></li>
-    <li name="calavera"> <img src="/paper/calavera.png" width="40" height="40"></li>
+    <li name="none"><img src="paper/none.png" width="40" height="40"></li>
+    <li name="corazon"> <img src="paper/corazon.png" width="40" height="40"></li>
+    <li name="calavera"> <img src="paper/calavera.png" width="40" height="40"></li>
   </ul>
   </li>
   </ul>
@@ -331,7 +331,7 @@ $("li ul li:first-child").css({"border-top-style":"none"});
 $("#menudrop li ul li").click(function(){
  var texto = $(this).attr("name");
 dibus.material.map =  THREE.ImageUtils.loadTexture('paper/'+ texto +'.png');
-$("#imagen").attr("src", "/paper/"+texto+".png");
+$("#imagen").attr("src", "paper/"+texto+".png");
 });
 
 var image = new Image();
