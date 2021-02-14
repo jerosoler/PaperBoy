@@ -755,7 +755,7 @@ $('#colorSelector').css('backgroundColor','#'+valbody);
 $('#colorSelector').css('color','#'+valbody);
 
 
-$('#button').click(function(){
+$('#button').click( async function(){
 
 /*$('body').append('<video id="video" autoplay loop style="display:none" width="1000" height="600" muted><source src="video/revestimientos.mp4" type="video/mp4"><source src="video/revestimientos.webm" type="video/webm"></video>');*/
 
@@ -764,11 +764,14 @@ window.URL = window.URL || window.webkitURL;
 	                         navigator.webkitGetUserMedia ||
 	                         navigator.mozGetUserMedia;
 
-	navigator.getUserMedia({video: true}, function(stream) {
+ const mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
+  document.querySelector('video').srcObject = mediaStream;
+
+	/*navigator.getUserMedia({video: true}, function(stream) {
 	document.querySelector('video').src = window.URL.createObjectURL(stream);
   }, function(err) {
     console.log("Ocurrió el siguiente error: " + err);
-   });
+  });*/
 
 /*
 $('#video source').attr('src', 'ame/video/revestimientos.webm');
